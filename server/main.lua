@@ -34,19 +34,8 @@ end
 --- @param radius Optional radius to check (default 6.0).
 --- @return boolean True if near a shop.
 local function IsNearAnyShop(src, radius)
-    radius = radius or 6.0
+    radius = 20
     local coords = GetPlayerCoords(src)
-    if Config.DivingZones then
-        for _, zone in ipairs(Config.DivingZones) do
-            if zone.ped and zone.ped.enabled and zone.ped.coords then
-                local pedCoords = vector3(zone.ped.coords.x, zone.ped.coords.y, zone.ped.coords.z)
-                if #(coords - pedCoords) <= radius then 
-                    return true 
-                end
-            end
-        end
-    end
-
     local fallbackShop = Config.ShopPed.coords.xyz
     if #(coords - fallbackShop) <= radius then 
         return true 
