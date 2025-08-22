@@ -270,12 +270,6 @@ RegisterNetEvent('peleg-diving:server:SellItem', function(itemName, quantity)
         return
     end
 
-    if not IsNearAnyShop(source, 6.0) then
-        TriggerClientEvent('peleg-diving:client:notify', source,
-            { title = 'Diving', description = 'You must be at the diving shop to sell.', type = 'error' })
-        return
-    end
-
     local hasCount = 0
     if Bridge.Inventory == 'ox' then
         hasCount = exports.ox_inventory:Search(source, 'count', itemName) or 0
@@ -354,12 +348,6 @@ RegisterNetEvent('peleg-diving:server:PurchaseItem', function(itemName, quantity
         return
     end
 
-    if not IsNearAnyShop(source, 6.0) then
-        TriggerClientEvent('peleg-diving:client:notify', source,
-            { title = 'Diving Shop', description = 'You must be at the diving shop to purchase.', type = 'error' })
-        return
-    end
-
     local totalPrice = (shopItem.price or 0) * qty
     if totalPrice <= 0 then
         TriggerClientEvent('peleg-diving:client:notify', source,
@@ -419,12 +407,6 @@ RegisterNetEvent('peleg-diving:server:RentVehicle', function(vehicleName, _durat
                     vehicleConfig.level .. ' to rent this vehicle!',
                 type = 'error'
             })
-        return
-    end
-
-    if not IsNearAnyShop(source, 8.0) then
-        TriggerClientEvent('peleg-diving:client:notify', source,
-            { title = 'Vehicle Rental', description = 'You must be at a diving zone to rent.', type = 'error' })
         return
     end
 
