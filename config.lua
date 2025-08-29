@@ -13,6 +13,10 @@ Config.Inventory = 'auto'
 Config.Target = 'drawtext'
 Config.TargetDistance = 13.2 -- Default interaction distance for target systems
 
+-- Fuel System Configuration
+Config.FuelSystem = 'auto' -- 'auto' | 'lc_fuel' | 'ox_fuel' | 'qb_fuel' | 'legacy'
+Config.DefaultFuelLevel = 100 -- Default fuel level when spawning vehicles
+
 -- Inventory Images Path (for item images in shop)
 Config.InventoryImagesPath = 'ox_inventory/web/images/'
 

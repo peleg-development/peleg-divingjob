@@ -70,6 +70,36 @@ function RentVehicle(vehicle, zoneIndex)
     end
 end
 
+---@param vehicle number The vehicle entity to set fuel for
+---@param fuelLevel number The fuel level to set (0-100)
+local function SetVehicleFuel(vehicle, fuelLevel)
+    if not vehicle or not DoesEntityExist(vehicle) then return end
+    
+    local fuelSystem = Config.FuelSystem
+    
+    if fuelSystem == 'auto' then
+        if GetResourceState('lc_fuel') == 'started' then
+            fuelSystem = 'lc_fuel'
+        elseif GetResourceState('ox_fuel') == 'started' then
+            fuelSystem = 'ox_fuel'
+        elseif GetResourceState('qb-fuel') == 'started' then
+            fuelSystem = 'qb_fuel'
+        else
+            fuelSystem = 'legacy'
+        end
+    end
+    
+    if fuelSystem == 'lc_fuel' then
+        exports['lc_fuel']:SetFuel(vehicle, fuelLevel)
+    elseif fuelSystem == 'ox_fuel' then
+        exports['ox_fuel']:SetFuel(vehicle, fuelLevel)
+    elseif fuelSystem == 'qb_fuel' then
+        TriggerEvent('qb-fuel:client:SetFuel', vehicle, fuelLevel)
+    else
+        SetVehicleFuelLevel(vehicle, fuelLevel)
+    end
+end
+
 RegisterNetEvent('peleg-diving:client:SpawnRentedVehicle', function(vehicleName, zoneIndex)
     if currentRentedVehicle and DoesEntityExist(currentRentedVehicle) then
         DeleteEntity(currentRentedVehicle)
@@ -106,6 +136,9 @@ RegisterNetEvent('peleg-diving:client:SpawnRentedVehicle', function(vehicleName,
     SetEntityAsMissionEntity(currentRentedVehicle, true, true)
     SetVehicleEngineOn(currentRentedVehicle, false, true, true)
     SetVehicleDoorsLocked(currentRentedVehicle, 1)
+
+    -- Set fuel level based on configured fuel system
+    SetVehicleFuel(currentRentedVehicle, Config.DefaultFuelLevel)
 
     TriggerEvent('vehiclekeys:client:SetOwner', GetVehicleNumberPlateText(currentRentedVehicle))
 
