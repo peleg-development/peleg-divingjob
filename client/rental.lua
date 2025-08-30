@@ -92,7 +92,8 @@ local function SetVehicleFuel(vehicle, fuelLevel)
     if fuelSystem == 'lc_fuel' then
         exports['lc_fuel']:SetFuel(vehicle, fuelLevel)
     elseif fuelSystem == 'ox_fuel' then
-        exports['ox_fuel']:SetFuel(vehicle, fuelLevel)
+        Entity(vehicle).state.fuel = fuelLevel
+        -- exports['ox_fuel']:SetFuel(vehicle, fuelLevel)
     elseif fuelSystem == 'qb_fuel' then
         TriggerEvent('qb-fuel:client:SetFuel', vehicle, fuelLevel)
     else
@@ -137,7 +138,6 @@ RegisterNetEvent('peleg-diving:client:SpawnRentedVehicle', function(vehicleName,
     SetVehicleEngineOn(currentRentedVehicle, false, true, true)
     SetVehicleDoorsLocked(currentRentedVehicle, 1)
 
-    -- Set fuel level based on configured fuel system
     SetVehicleFuel(currentRentedVehicle, Config.DefaultFuelLevel)
 
     TriggerEvent('vehiclekeys:client:SetOwner', GetVehicleNumberPlateText(currentRentedVehicle))
